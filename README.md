@@ -1,1 +1,2 @@
-# ProyectoTrex
+# plantillaAlumnoTrex-
+contiene archivos imágenes completas
