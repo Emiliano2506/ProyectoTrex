@@ -15,6 +15,7 @@ var score = 0
 var musicaDeFondo
 var botonMute;
 var desmuteado;
+var velo = -4
 
 
 //variables de sonido
@@ -81,12 +82,15 @@ function setup() {
   gameOverSprite.visible = false
 
   musicaDeFondo.play();
-  musicaDeFondo.setVolume(0.3);
+  musicaDeFondo.setVolume(0.1);
   botonMute = createImg("./Mute.jpg");
   botonMute.position(700,15);
   botonMute.size(40,40);
   botonMute.mousePressed(mute);
   desmuteado = createImg("./desmuteado.jpg");
+  desmuteado.mousePressed(playMusic);
+  desmuteado.position(650,15);
+  desmuteado.size(40,40);
 }
 
 function draw() {
@@ -99,11 +103,22 @@ function draw() {
   //evalua estado del juego
   if(estadoDelJuego == "play"){
 
-
+    //logica del score
+    score = score + Math.round(getFrameRate()/60);
+    if(score > 0 && score %200 === 0){
+      console.log("si llego xd")
+      checkpointSound.play();
+      checkpointSound.setVolume(0.1);
+      ground.velocityX = ground.velocityX -2
+      //velo = velo -3
+      //console.log("velocidad"+velo);
+    }
   //hacer que el trex salte al presionar la barra espaciadora
-  if(keyDown("space") && trex.y >= 170){
+  if(keyDown("space") && trex.y >= 150){
+    //trex.y = 260
     trex.velocityY=-10
     jumpSound.play();
+    jumpSound.setVolume(0.1);
   }
   //agregar gravedad
  trex.velocityY = trex.velocityY + 1;
@@ -220,8 +235,11 @@ function mute(){
   console.log("funcion")
   if(musicaDeFondo.isPlaying()){
     musicaDeFondo.stop();
+    trex.changeAnimation("etiqueta1");
   }
-  else{
+}
+function playMusic(){
+  if(musicaDeFondo.stop){
     musicaDeFondo.play();
   }
 }
